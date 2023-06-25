@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm replit.sh
+
 clear
 
 read -p "Enter the server URL: " server_url
