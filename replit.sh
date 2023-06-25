@@ -2,6 +2,10 @@
 
 clear
 
+echo "Downloading Setup.sh"
+
+wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/setup.sh" -O setup.sh
+
 echo "configuring replit.nix"
 
 rm replit.nix
@@ -39,11 +43,5 @@ echo -e '{
     }
   }
 }' > replit.nix
-
-clear
-
-echo "Downloading Setup.sh"
-
-wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/setup.sh" -O setup.sh
 
 bash setup.sh
