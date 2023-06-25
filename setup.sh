@@ -4,7 +4,7 @@ rm replit.sh
 
 clear
 
-read -p "Enter the server URL: " server_url
+read -p "Enter the server jar URL: " server_url
 
 wget "$server_url" -O server.jar
 
@@ -68,11 +68,11 @@ echo "Online Mode Yes/On: Requires valid Mojang accounts to connect. Offers secu
 echo 
 echo "Online Mode No/Off: Allows players without Mojang accounts to join. Not recommended due to potential security risks and violation of Minecraft EULA."
 
-read -p "Do you want to turn on or off the online-mode? (yes/no): " onlinemodo
+read -p "Do you want to turn on or off the online-mode? (on/off): " onlinemodo
 
 onlinemodo=$(echo "$onlinemodo" | tr '[:upper:]' '[:lower:]')
 
-if [[ "$onlinemodo" == "yes" || "$onlinemodo" == "y" ]]; then
+if [[ "$onlinemodo" == "on" ]]; then
   sed -i "s/^online-mode=.*/online-mode=true/" server.properties
   clear
   echo "Online-Mode Is active (Premium user only)"
@@ -195,16 +195,16 @@ echo "$config_content" > "packetriotconfig.json"
 
 clear
 
-./packetriot tcp allocate &
-allocate_pid=$!
+./packetriot tcp allocate >/dev/null 2>&1 &
 
+# Store the PID of the program
+program_pid=$!
+
+# Sleep for 2 seconds
 sleep 2
 
-if ps -p $allocate_pid > /dev/null; then
-  echo "Waiting for TCP allocation to complete..."
-  sleep 2
-
-  kill -SIGINT $allocate_pid
+# Terminate the program using its PID
+kill $program_pid
 
 clear
 
