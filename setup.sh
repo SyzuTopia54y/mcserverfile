@@ -8,6 +8,8 @@ read -p "Enter the server jar URL: " server_url
 
 wget "$server_url" -O server.jar
 
+clear
+
 echo -e "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n#You also agree that tacos are tasty, and the best food in the world.\n#Wed Jun 21 18:57:44 GMT 2023" > eula.txt
 
 echo "The Minecraft server End User License Agreement (EULA) states that by running the server, you agree to certain terms and conditions."
@@ -193,18 +195,7 @@ config_content=$(cat /home/runner/.pktriot/config.json)
 
 echo "$config_content" > "packetriotconfig.json"
 
-clear
-
-./packetriot tcp allocate >/dev/null 2>&1 &
-
-# Store the PID of the program
-program_pid=$!
-
-# Sleep for 2 seconds
-sleep 2
-
-# Terminate the program using its PID
-kill $program_pid
+./packetriot tcp 25565 --config packetriotconfig.json
 
 clear
 
@@ -229,4 +220,6 @@ clear
 
 echo "The setup for server\nName: $server_name\nIngame-IP: $ip\nIngame-Port: $port\nJoin-server-using: $ip:$port\nMax-Ram: $ramkah"
 
-rm setup.sh
+sleep 6
+
+kill -1 
