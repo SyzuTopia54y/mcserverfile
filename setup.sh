@@ -50,6 +50,12 @@ clear
 
 read -p "Enter the server max ram: (512-1703) " ramkah
 
+echo -e "{
+  \"Server_jar\": \"server.jar\",
+  \"packetriot_config\": \"packetriotconfig.json\",
+  \"Server_ram\": \"$ramkah\"
+}" > config.json
+
 clear
 
 read -p "Enter the server MOTD (default: A Minecraft Server): " server_motd
@@ -144,9 +150,7 @@ read -p "Set password for $usernamekh: " -s passwordkh
 
 echo "The login detail for the web console is saved"
 
-mkdir cache
-
-echo -e "import hashlib\nimport binascii\nimport os\nimport sys\n\nif not os.path.exists(cache):\n    os.makedirs(cache)\n\nfile_path = \"cache/config.json\"\n\ndef generateStrongPasswordHash(password):\n    iterations = 1000\n    salt = getSalt()\n\n    dk = hashlib.pbkdf2_hmac('sha1', password.encode(), salt, iterations, dklen=64)\n    return str(iterations) + \":\" + toHex(salt) + \":\" + toHex(dk)\n\n\ndef validatePassword(passToCheck, storedPassword):\n    parts = storedPassword.split(\":\")\n    iterations = int(parts[0])\n    salt = fromHex(parts[1])\n    hash = fromHex(parts[2])\n\n    dk = hashlib.pbkdf2_hmac('sha1', passToCheck.encode(), salt, iterations, dklen=len(hash))\n\n    diff = len(hash) ^ len(dk)\n    for x, y in zip(hash, dk):\n        diff |= x ^ y\n    return diff == 0\n\n\ndef toHex(array):\n    hex_str = binascii.hexlify(array).decode().lower()\n    padding_length = (len(array) * 2) - len(hex_str)\n    if padding_length > 0:\n        return '0' * padding_length + hex_str\n    else:\n        return hex_str\n\n\ndef fromHex(hex_str):\n    return binascii.unhexlify(hex_str)\n\n\ndef getSalt():\n    return os.urandom(16)\n\nuser = sys.argv[1] if len(sys.argv) > 1 else \"\"\npassword = sys.argv[2] if len(sys.argv) > 2 else \"\"\n\nhashed_password = generateStrongPasswordHash(password)\n\nfolder_path = \"plugins/JPanel\"\nconfig_file = f\"{folder_path}/config.yml\"\n\nif not os.path.exists(folder_path):\n    os.makedirs(folder_path)\n\nconfig_content = f\"\"\"http-port: 4567\ndebug-mode: false\nuse-ssl: false\nkeystore-name: ''\nkeystore-password: ''\nusers:\n  {user}:\n    password: {hashed_password}\n    canEditFiles: true\n    canChangeGroups: true\n    canSendCommands: true\n\"\"\"\n\nwith open(config_file, \"w\") as f:\n    f.write(config_content)\n\n\n\n\n\ndata = {\n    \"user\": user,\n    \"pass\": password\n}\n\nwith open(file_path, \"w\") as file:\n    json.dump(data, file, indent=4)" > temp.py
+echo -e "import hashlib\nimport binascii\nimport os\nimport json\nimport sys\n\nif not os.path.exists(\"cache\"):\n  os.makedirs(\"cache\")\n\nfile_path = \"cache/config.json\"\n\n\ndef generateStrongPasswordHash(password):\n  iterations = 1000\n  salt = getSalt()\n\n  dk = hashlib.pbkdf2_hmac('sha1',\n                           password.encode(),\n                           salt,\n                           iterations,\n                           dklen=64)\n  return str(iterations) + \":\" + toHex(salt) + \":\" + toHex(dk)\n\n\n\ndef validatePassword(passToCheck, storedPassword):\n  parts = storedPassword.split(\":\")\n  iterations = int(parts[0])\n  salt = fromHex(parts[1])\n  hash = fromHex(parts[2])\n\n  dk = hashlib.pbkdf2_hmac('sha1',\n                           passToCheck.encode(),\n                           salt,\n                           iterations,\n                           dklen=len(hash))\n\n  diff = len(hash) ^ len(dk)\n  for x, y in zip(hash, dk):\n    diff |= x ^ y\n  return diff == 0\n\n\n\ndef toHex(array):\n  hex_str = binascii.hexlify(array).decode().lower()\n  padding_length = (len(array) * 2) - len(hex_str)\n  if padding_length > 0:\n    return '0' * padding_length + hex_str\n  else:\n    return hex_str\n\n\n\ndef fromHex(hex_str):\n  return binascii.unhexlify(hex_str)\n\n\ndef getSalt():\n  return os.urandom(16)\n\n\nuser = sys.argv[1] if len(sys.argv) > 1 else \"\"\npassword = sys.argv[2] if len(sys.argv) > 2 else \"\"\n\nhashed_password = generateStrongPasswordHash(password)\n\nfolder_path = \"plugins/JPanel\"\nconfig_file = f\"{folder_path}/config.yml\"\n\nif not os.path.exists(folder_path):\n  os.makedirs(folder_path)\n\nconfig_content = f\"\"\"http-port: 4567\ndebug-mode: false\nuse-ssl: false\nkeystore-name: ''\nkeystore-password: ''\nusers:\n  {user}:\n    password: {hashed_password}\n    canEditFiles: true\n    canChangeGroups: true\n    canSendCommands: true\n\"\"\"\n\nwith open(config_file, \"w\") as f:\n  f.write(config_content)\n\ndata = {\"user\": user, \"pass\": password}\n\nwith open(file_path, \"w\") as file:\n  json.dump(data, file, indent=4)\n" > temp.py
 
 python temp.py $usernamekh $passwordkh
 
@@ -206,12 +210,6 @@ rm main.py
 wget "https://github.com/SyzuTopia54y/mcserverfile/raw/main/main.py"
 
 clear
-
-echo -e "{
-  \"Server_jar\": \"server.jar\",
-  \"packetriot_config\": \"packetriotconfig.json\",
-  \"Server_ram\": \"$ramkh\"
-}" > config.json
 
 serverHost=$(jq -r '.serverHost' file.json)
 port=$(jq -r '.ports[0].port' file.json)
