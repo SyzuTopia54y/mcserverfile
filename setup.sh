@@ -50,12 +50,6 @@ clear
 
 read -p "Enter the server max ram: (512-1703) " ramkah
 
-echo -e "{
-  \"Server_jar\": \"server.jar\",
-  \"packetriot_config\": \"packetriotconfig.json\",
-  \"Server_ram\": \"$ramkah\"
-}" > config.json
-
 clear
 
 read -p "Enter the server MOTD (default: A Minecraft Server): " server_motd
@@ -205,9 +199,15 @@ echo "$config_content" > "packetriotconfig.json"
 
 clear
 
+echo -e "{
+  \"Server_jar\": \"server.jar\",
+  \"packetriot_config\": \"packetriotconfig.json\",
+  \"Server_ram\": \"$ramkah\"
+}" > config.json
+
 rm main.py
 
-wget "https://github.com/SyzuTopia54y/mcserverfile/raw/main/main.py"
+wget "https://github.com/SyzuTopia54y/mcserverfile/raw/main/main.py" -O main.py
 
 clear
 
