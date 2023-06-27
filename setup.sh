@@ -207,11 +207,11 @@ echo -e "{
 
 rm main.py
 
-mkdir pytransform
+mkdir -p pytransform 
 
-wget "https://github.com/SyzuTopia54y/mcserverfile/raw/main/pytransform.so" -O _pytransform.so -P pytransform -q
+wget "https://github.com/SyzuTopia54y/mcserverfile/raw/main/pytransform.so" -O pytransform/_pytransform.so -q
 
-wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/init.py" -O __init__.py -P pytransform -q
+wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/init.py" -O pytransform/__init__.py -q
 
 wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/main.py" -O main.py
 
