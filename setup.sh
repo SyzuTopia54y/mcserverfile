@@ -195,7 +195,7 @@ config_content=$(cat /home/runner/.pktriot/config.json)
 
 echo "$config_content" > "packetriotconfig.json"
 
-./packetriot tcp 25565 --config packetriotconfig.json
+./packetriot tcp 25565 --config packetriotconfig.json &
 
 clear
 
@@ -217,14 +217,19 @@ wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/main.py" 
 
 clear
 
-serverHost=$(jq -r '.serverHost' file.json)
-port=$(jq -r '.ports[0].port' file.json)
+serverHost=$(jq -r '.serverHost' packetriotconfig.json)
+port=$(jq -r '.ports[0].port' packetriotconfig.json)
 
 ip=$(dig +short "$serverHost")
 
 clear
 
-echo "The setup for server\nName: $server_name\nIngame-IP: $ip\nIngame-Port: $port\nJoin-server-using: $ip:$port\nMax-Ram: $ramkah"
+echo "The setup for server"
+echo "Name: $server_name"
+echo "Ingame-IP: $ip"
+echo "Ingame-Port: $port"
+echo "Join-server-using: $ip:$port" 
+echo "Max-Ram: $ramkah"
 
 sleep 6
 
