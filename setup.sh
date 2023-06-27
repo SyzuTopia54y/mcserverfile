@@ -233,4 +233,4 @@ echo "Max-Ram: $ramkah"
 
 sleep 6
 
-kill -1 
+kill 1 
