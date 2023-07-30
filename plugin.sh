@@ -4,7 +4,7 @@ rm replit.sh
 
 clear
 
-read -p "Enter the server jar URL: " server_url
+read -p "Paste the Server jar download url: " server_url
 
 wget "$server_url" -O server.jar
 
@@ -14,19 +14,24 @@ echo -e "#By changing the setting below to TRUE you are indicating your agreemen
 
 echo "The Minecraft server End User License Agreement (EULA) states that by running the server, you agree to certain terms and conditions."
 
-read -p "Do you agree with the Minecraft EULA? (yes/no): " eula_agreement
+while true; do
+  read -p "Do you agree with the Minecraft EULA? (yes/no): " eula_agreement
+  eula_agreement=$(echo "$eula_agreement" | tr '[:upper:]' '[:lower:]')
 
-eula_agreement=$(echo "$eula_agreement" | tr '[:upper:]' '[:lower:]')
-
-if [[ "$eula_agreement" == "yes" || "$eula_agreement" == "y" ]]; then
-  echo "eula=true" >> eula.txt
-  clear
-  echo "You have agreed to the Minecraft EULA."
-else
-  echo "eula=false" >> eula.txt
-  clear
-  echo "You have not agreed to the Minecraft EULA. The server will not start until you agree."
-fi
+  if [[ "$eula_agreement" == "yes" || "$eula_agreement" == "y" ]]; then
+    echo "eula=true" >> eula.txt
+    clear
+    echo "You have agreed to the Minecraft EULA."
+    break
+  elif [[ "$eula_agreement" == "no" || "$eula_agreement" == "n" ]]; then
+    echo "eula=false" >> eula.txt
+    clear
+    echo "You have not agreed to the Minecraft EULA. The server will not start until you agree."
+    break
+  else
+    echo "Invalid input. Please enter 'yes' or 'no'."
+  fi
+done
 
 wait "$wget_pid"
 
@@ -48,7 +53,7 @@ sed -i "s/^server-name=.*/server-name=$server_name/" server.properties
 
 clear
 
-read -p "Enter the server max ram: (512-1703) " ramkah
+read -p "Enter the server max ram: (512MB~1833MB) " ramkah
 
 clear
 
@@ -70,19 +75,24 @@ echo "Online Mode Yes/On: Requires valid Mojang accounts to connect. Offers secu
 echo 
 echo "Online Mode No/Off: Allows players without Mojang accounts to join. Not recommended due to potential security risks and violation of Minecraft EULA."
 
-read -p "Do you want to turn on or off the online-mode? (on/off): " onlinemodo
+while true; do
+    read -p "Do you want to turn on or off the online-mode? (on/off): " onlinemodo
 
-onlinemodo=$(echo "$onlinemodo" | tr '[:upper:]' '[:lower:]')
+    onlinemodo=$(echo "$onlinemodo" | tr '[:upper:]' '[:lower:]')
 
-if [[ "$onlinemodo" == "on" ]]; then
-  sed -i "s/^online-mode=.*/online-mode=true/" server.properties
-  clear
-  echo "Online-Mode Is active (Premium user only)"
-else
-  sed -i "s/^online-mode=.*/online-mode=false/" server.properties
-  clear
-  echo "Online-Mode Is not active (Crack User)"
-fi
+    if [[ "$onlinemodo" == "on" ]]; then
+    sed -i "s/^online-mode=.*/online-mode=true/" server.properties
+    clear
+    echo "Online-Mode Is active (Premium user only can join)"
+    elif [[ "$onlinemodo" == "off" ]]; then
+    sed -i "s/^online-mode=.*/online-mode=false/" server.properties
+    clear
+    echo "Online-Mode Is not active (Cracked User can join)"
+    else 
+        echo "Invalid input. Please enter 'on' or 'off'"
+    fi
+done
+
 
 clear
 
@@ -92,19 +102,23 @@ sed -i "/s^difficulty=.*/difficulty=$difficulty/" server.properties
 
 clear
 
-read -p "Do you want to set the server to hardcore mode? (yes/no): " hardcoremodo
+while true; do
+    read -p "Do you want to set the server to hardcore mode? (yes/no): " hardcoremodo
 
-hardcoremodo=$(echo "$hardcoremodo" | tr '[:upper:]' '[:lower:]')
+    hardcoremodo=$(echo "$hardcoremodo" | tr '[:upper:]' '[:lower:]')
 
-if [[ "$hardcoremodo" == "yes" || "$hardcoremodo" == "y" ]]; then
-  sed -i "s/^hardcore=.*/hardcore=true/" server.properties
-  clear
-  echo "Hardcore Mode is activated becareful you only have 1 live"
-else
-  sed -i "s/^hardcore=.*/hardcore=false/" server.properties
-  clear
-  echo "Hardcore Mode is not activated. enjoy your survival."
-fi
+    if [[ "$hardcoremodo" == "yes" || "$hardcoremodo" == "y" ]]; then
+    sed -i "s/^hardcore=.*/hardcore=true/" server.properties
+    clear
+    echo "Hardcore Mode is activated becareful you only have 1 live"
+    elif [[ "$hardcoremodo" == "no" || "$hardcoremodo" == "n" ]]
+    sed -i "s/^hardcore=.*/hardcore=false/" server.properties
+    clear
+    echo "Hardcore Mode is not activated. enjoy your survival."
+    else
+        echo "Invalid input. Please enter 'yes' or 'no'"
+    fi
+done
 
 clear
 
@@ -112,19 +126,23 @@ echo "Command Block Enable: Enables the usage of command blocks in the game worl
 echo
 echo "Command Block Disable: Disables the usage of command blocks in the game world. Players will not be able to interact with or activate command blocks."
 
-read -p "Do you want to enable command-block? (yes/no): " cmbl
+while true; do
+  read -p "Do you want to enable command-block? (yes/no): " cmbl
 
-cmbl=$(echo "$cmbl" | tr '[:upper:]' '[:lower:]')
+  cmbl=$(echo "$cmbl" | tr '[:upper:]' '[:lower:]')
 
-if [[ "$cmbl" == "yes" || "$cmbl" == "y" ]]; then
-  sed -i "s/^enable-command-block=.*/enable-command-block=true/" server.properties
-  clear
-  echo "Command Block enabled."
-else
-  sed -i "s/^enable-command-block=.*/enable-command-block=false/" server.properties
-  clear
-  echo "Command Block disabled."
-fi
+  if [[ "$cmbl" == "yes" || "$cmbl" == "y" ]]; then
+    sed -i "s/^enable-command-block=.*/enable-command-block=true/" server.properties
+    clear
+    echo "Command Block enabled."
+  elif [[ "$cmbl" == "no" || "$cmbl" == "n"]]; then
+    sed -i "s/^enable-command-block=.*/enable-command-block=false/" server.properties
+    clear
+    echo "Command Block disabled."
+  else
+    echo "Invalid input. Please enter 'yes' or 'no'"
+  fi
+done
 
 clear
 
@@ -163,6 +181,9 @@ if [[ $install_viaversion == "yes" || $install_viaversion == "y" ]]; then
   wget "https://github.com/SyzuTopia54y/mcserverfile/raw/main/ViaBackwards.jar" -P plugins -q
 
   echo "ViaVersion packages downloaded successfully."
+else 
+  clear
+  echo  "Skipping ViaVersion"
 fi
 
 clear
@@ -225,11 +246,11 @@ ip=$(dig +short "$serverHost")
 clear
 
 echo "The setup for server"
-echo "Name: $server_name"
+echo "Server Name: $server_name"
 echo "Ingame-IP: $ip"
 echo "Ingame-Port: $port"
 echo "Join-server-using: $ip:$port" 
-echo "Max-Ram: $ramkah"
+echo "Server Max-Ram: $ramkah"
 
 sleep 6
 
