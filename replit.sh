@@ -2,6 +2,19 @@
 
 clear
 
+read -p "Please specify the server architecture you intend to deploy. (plugins/modded): " tipeserver
+
+if [[ "$tipeserver" == "plugins" || "$tipeserver" == "Plugins" ]]; then
+  wget https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/plugin.sh -o setup.sh
+elif [[ "$tipeserver" == "modded" || "$tipeserver" == "Modded" ]]; then
+  wget https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/modded.sh -o setup.sh
+else
+  echo "Invalid Server architecture, Please enter a valid architecture."
+  exit 1
+fi
+
+clear
+
 read -p "What Minecraft Server Version You want to create? " mcver
 
 if [[ "$mcver" == "1.7.2" || "$mcver" == "1.7.4" || "$mcver" == "1.7.5" || "$mcver" == "1.7.6" || "$mcver" == "1.7.7" || "$mcver" == "1.7.8" || "$mcver" == "1.7.9" || "$mcver" == "1.7.10" || "$mcver" == "1.8" || "$mcver" == "1.8.1" || "$mcver" == "1.8.2" || "$mcver" == "1.8.3" || "$mcver" == "1.8.4" || "$mcver" == "1.8.5" || "$mcver" == "1.8.6" || "$mcver" == "1.8.7" || "$mcver" == "1.8.8" || "$mcver" == "1.8.9" || "$mcver" == "1.9" || "$mcver" == "1.9.1" || "$mcver" == "1.9.2" || "$mcver" == "1.9.3" || "$mcver" == "1.9.4" || "$mcver" == "1.10" || "$mcver" == "1.10.1" || "$mcver" == "1.10.2" || "$mcver" == "1.11" || "$mcver" == "1.11.1" || "$mcver" == "1.11.2" || "$mcver" == "1.12" || "$mcver" == "1.12.1" || "$mcver" == "1.12.2" ]]; then
@@ -16,8 +29,6 @@ else
   echo "Invalid Minecraft version input. Please enter a valid version."
   exit 1
 fi
-
-wget "https://raw.githubusercontent.com/SyzuTopia54y/mcserverfile/main/setup.sh" -O setup.sh
 
 rm replit.nix
 
